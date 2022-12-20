@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * DBResultSetCaller: main resultset caller object, that , if exists, collects from resultset
- * D.Tordera, 20171031
- * D.Tordera, 20210220. Refactoring from unique ci project
+ * DTordera, 20221220. DBResultSetCaller: main resultset caller object, that , if exists, collects from resultset
  */
 public abstract class DBResultSetCaller<T extends BaseEntity> extends DBCaller<DBResultSetCaller<T>> {
 

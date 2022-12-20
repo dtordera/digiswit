@@ -10,9 +10,7 @@ import lombok.Setter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /*
- * DBCaller: main class for DBCaller objects, i.e, objects that store parameters & response for a procedure call.
- * D.Tordera, 20171031
- * D.Tordera, 20210220. Refactor from unique ci project
+ * DTordera, 20221220. DBCaller: main class for DBCaller objects, i.e, objects that store parameters & response for a procedure call.
  */
 
 public abstract class DBCaller<T extends DBCaller<T>> {
@@ -44,7 +42,7 @@ public abstract class DBCaller<T extends DBCaller<T>> {
 
 	// Inner call to db
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public T doCall() throws Exception
+	public T doCall() throws SQLException
 	{
 		CallableStatement cs = null;
 		Connection cn = null;

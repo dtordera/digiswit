@@ -1,7 +1,7 @@
 package com.dtsc.space.ci.entities;
 
 /*
- * BaseEntity: base entity frame class for pure controlled heritage in generics
- * D.Tordera, 20171031
-  */
+ * DTordera, 20221220. BaseEntity: base entity frame class for pure controlling heritage in generics
+ */
+
 public abstract class BaseEntity { }

@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /*
- * Ping Basic ping entity
- * D.Tordera, 20171031
+ * DTordera, 20221220. Ping Basic ping entity
  */
+
 @Getter
 @Setter
 final public class Ping {

@@ -12,29 +12,32 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 /*
- * DTordera, 2017
- * General logging filter (outside Spring): gets request and prints it without consuming it; same with response
+ * DTordera, 20221220. General custom logging filter (outside Spring): gets req & response and prints it without consuming it
+ * NOTE: could be used as well SpringBoot CommonsRequestLoggingFilter.
  */
 
 public class RequestLoggerFilterHelper {
 
-	final static RequestLogger logger = new RequestLogger(RequestLoggerFilterHelper.class); // general tweaked logger
+	final static RequestLogger logger = new RequestLogger(RequestLoggerFilterHelper.class);
+
 	final static Random rnd = new Random(); // required for uid
-	final static int maxPayloadLength = 1000; // Not log too long responses...
+
+	final static int maxPayloadLength = 1000; // Not log too much long responses...
 	final static boolean includeResponsePayload = true; //
 
 	private static String getContentAsString(byte[] buf, String charsetName) {
 		
 	    if (buf == null || buf.length == 0) return "";
 
+		// max limit
 		int length = Math.min(buf.length, maxPayloadLength);
 
-
 	    try {
-	    	return new String(buf, 0, length, charsetName);
+	    	return new String(buf, 0, length, charsetName) +
+					(buf.length > maxPayloadLength ? " ...(" + (buf.length - maxPayloadLength) + " bytes more)":"");
 
 	    } catch (UnsupportedEncodingException ex) {
-	    	return "Unsupported Encoding";
+			return "Unsupported Encoding"; // should never arrive here
 	    }
 	}
 
@@ -56,7 +59,8 @@ public class RequestLoggerFilterHelper {
 			.append(request.getMethod())
 			.append(" to ")
 			.append(request.getRequestURL());
-	
+
+
 		String queryString = request.getQueryString();
 		if (queryString != null)
 			reqInfo.append("?").append(queryString);
@@ -72,17 +76,19 @@ public class RequestLoggerFilterHelper {
 		// Send them to workflow chain
 		filterChain.doFilter(wrappedRequest, wrappedResponse);
 
-		// Get request payload
+		// Calculate total request & answer time
+		long duration = System.currentTimeMillis() - startTime;
+
+		// Get request payload. It must be shown *after* doFilter, as it has been parsed there from the request,
+		// and not before.
+
 		String requestBody =
 				getContentAsString(wrappedRequest.getContentAsByteArray(), request.getCharacterEncoding());
 
 		if (requestBody.length() > 0)
-			logger.info(request, "(request payload) -> " + requestBody);
+			logger.info(request, "-> Request payload was: " + requestBody.replace("\n", "").replace("\t",""));
 
-		// Calculate total request & answer time
-		long duration = System.currentTimeMillis() - startTime;
-
-		logger.info(request, "<- Answered with http status code " + response.getStatus() + " (" + duration + "ms)");
+		logger.info(request, "<- Answered with http status code " + response.getStatus() + " (" + duration + " ms)");
 		
 		byte[] r = wrappedResponse.getContentAsByteArray();
 		if (includeResponsePayload && r.length > 0)

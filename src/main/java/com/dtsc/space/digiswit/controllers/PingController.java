@@ -1,8 +1,7 @@
 package com.dtsc.space.digiswit.controllers;
 
 /*
- * PingController. Check if API is alive. It returns server Unix timestamp.
- * D.Tordera, 20221220
+ * D.Tordera, 20221220. PingController. Check if API is alive. It returns server Unix timestamp.
  */
 
 import com.dtsc.space.digiswit.entities.Ping;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-// DTordera, 20221220. Basic ping controller
 
 @RestController
 @RequestMapping("/ping")

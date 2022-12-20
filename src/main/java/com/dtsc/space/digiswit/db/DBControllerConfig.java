@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /*
- * DBControllerConfig. DBController bean factory
- * D.Tordera, 202102201 (refactor)
+ * DTordera, 20221220. DBControllerConfig. DBController bean factory
  */
 
 @Configuration

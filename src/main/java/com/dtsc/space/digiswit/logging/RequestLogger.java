@@ -6,8 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 
 /*
- * DTordera, 201703 
- * General logger for requests received & API responses 
+ * DTordera, 20221220. General logger object derivation with some extra info & extra grepable uid
  */
 
 public class RequestLogger {
@@ -38,9 +37,9 @@ public class RequestLogger {
 	{
 		_logger.error(uid(r) + m);
 	}
-	
-	public void exception(HttpServletRequest r, Exception E, String m)
+
+	public void exception(HttpServletRequest r, Exception E)
 	{
-		error(r, m + " (" + E.getClass().getSimpleName() + ", " + E.getMessage() + ")");
+		error(r, E.getClass().getSimpleName() + ": " + E.getMessage());
 	}
 }

@@ -12,8 +12,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /*
- * DBControllerConfig. DBController bean factory
- * D.Tordera, 20200221. Refactor  
+ * DTordera, 20221220. DBControllerConfig. DBController bean factory
  */
 
 public class DBConfiguration {
