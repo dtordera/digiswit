@@ -1,0 +1,8 @@
+version: "3"
+services:
+ mbe: 
+  image: digiswit:latest
+  ports: 
+   - "9001"
+
+
