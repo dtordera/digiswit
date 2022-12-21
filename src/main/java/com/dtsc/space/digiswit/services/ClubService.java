@@ -17,10 +17,10 @@ public class ClubService {
 	final static RequestLogger logger = new RequestLogger(ClubService.class);
 
 	@Autowired
-	ValidationService validator;
+	ValidationService validatorService;
 
 	@Autowired
-	DBService dbservice;
+	DBService dbService;
 
 	//
 	// New club/user register section
@@ -33,22 +33,19 @@ public class ClubService {
 		try {
 
 			// Validate arguments
-			validator.validateNewClubRegister(request, newclub);
-
-			// Attempting to insert on db
-			dbservice.insertNewClub(request, newclub);
+			validatorService.validateNewClubRegister(request, newclub);
 
 			// All ok, return with echo
-			return new ResponseEntity<>(newclub, HttpStatus.OK);
+			return new ResponseEntity<>(dbService.insertNewClub(request, newclub), HttpStatus.OK);
 		}
 		catch(IllegalArgumentException IA) // bad arguments: returning, instead of 400 bad request, a more suitable 422
 		{
 			logger.exception(request, IA);
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		catch(SQLException sql)
+		catch(Exception E) // default exception response
 		{
-			logger.exception(request, sql);
+			logger.exception(request, E);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

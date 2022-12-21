@@ -1,6 +1,7 @@
 package com.dtsc.space.digiswit.db;
 
 import com.dtsc.space.ci.db.DBCaller;
+import com.dtsc.space.ci.entities.BaseEntity;
 import com.dtsc.space.digiswit.entities.NewClub;
 import lombok.Getter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,13 +11,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /*
- * Caller to DB for new club insertion
+ * DTordera, 20221220. Caller to DB for new club insertion
  */
 
 public class InsertNewClubCaller extends DBCaller<InsertNewClubCaller> {
 
 	@Getter
-	private NewClub newclub;
+	private final NewClub newclub;
 
 
 	public InsertNewClubCaller(JdbcTemplate jdbctemplate, NewClub newclub) {
@@ -42,5 +43,11 @@ public class InsertNewClubCaller extends DBCaller<InsertNewClubCaller> {
 
 		setRc(cs.getInt("rc"));
 		newclub.setId(cs.getInt("clubId"));
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public NewClub getResultObject() {
+		return newclub;
 	}
 }

@@ -40,6 +40,6 @@ public class RequestLogger {
 
 	public void exception(HttpServletRequest r, Exception E)
 	{
-		error(r, E.getClass().getSimpleName() + ": " + E.getMessage());
+		error(r, "** EXCEPTION ERROR ** " + E.getClass().getSimpleName() + ": " + E.getMessage());
 	}
 }

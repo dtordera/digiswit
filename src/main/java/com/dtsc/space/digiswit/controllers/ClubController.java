@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class ClubController {
 
 	@Autowired
-	ClubService clubservice;
+	ClubService clubService;
 
 	// Registering new club/user
 	@PostMapping(value="", produces={"application/json"}, consumes={"application/json"})
 	public ResponseEntity<Club> registerNewClub(HttpServletRequest request, @RequestBody NewClub newclub)
 	{
-		return clubservice.registerNewClub(request, newclub);
+		return clubService.registerNewClub(request, newclub);
 	}
 
 }

@@ -5,6 +5,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.dtsc.space.ci.entities.BaseEntity;
+import com.dtsc.space.digiswit.logging.RequestLogger;
+import com.dtsc.space.digiswit.services.LoginService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,7 +19,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class DBCaller<T extends DBCaller<T>> {
 
-	private JdbcTemplate jdbctemplate;
+	private final JdbcTemplate jdbctemplate;
+
+	final static RequestLogger logger = new RequestLogger(DBCaller.class);
 
 	@Getter
 	@Setter
@@ -40,18 +46,19 @@ public abstract class DBCaller<T extends DBCaller<T>> {
 	// Maps response parameters
 	public abstract void mapResponse(CallableStatement cs) throws SQLException;
 
+	// To implement in case of required result object
+	public abstract <Q extends BaseEntity> Q getResultObject();
+
 	// Inner call to db
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public T doCall() throws SQLException
+	public T doCall(HttpServletRequest request) throws SQLException
 	{
-		CallableStatement cs = null;
-		Connection cn = null;
-
-		try
+		try (Connection cn = jdbctemplate.getDataSource().getConnection();
+			 CallableStatement cs = cn.prepareCall(this.getSQLCommand().getString()))
 		{
+			logger.info(request, "Commit " + getSQLCommand().toString() + " to database");
+
 			// Prepare connection & procedure
-			cn = jdbctemplate.getDataSource().getConnection();
-			cs = cn.prepareCall(this.getSQLCommand().getString());
 			cn.setAutoCommit(isautomaticCommit());
 
 			// Map parameters in case are required
@@ -61,16 +68,15 @@ public abstract class DBCaller<T extends DBCaller<T>> {
 			cs.execute();
 
 			// In case caller was a dbresultsetcaller, then means db call returns a resultset, so retrieve it...
-			if (DBResultSetCaller.class.isAssignableFrom(this.getClass()))
-			{
+			if (DBResultSetCaller.class.isAssignableFrom(this.getClass())) {
 				ResultSet rs = cs.getResultSet();
 
 				// call to implemented dbresultset retriever...
 				if (rs != null)
-					((DBResultSetCaller)this).addItems(rs);
+					((DBResultSetCaller) this).addItems(rs);
 
 				// Ignore other possible resultsets returned by db call (can be extended, although not really needed)
-				while (cs.getMoreResults());
+				while (cs.getMoreResults()) ;
 
 				if (rs != null) rs.close();
 			}
@@ -80,19 +86,11 @@ public abstract class DBCaller<T extends DBCaller<T>> {
 
 			if (!isautomaticCommit())
 				cn.commit();
+
+			logger.info(request, "Commit OK. " + getSQLCommand().toString() +" result: " + getRc());
 		}
-		finally
-		{
-			try
-			{
-				if (cs != null) cs.close();
-				if (cn != null) cn.close();
-			}
-			catch(SQLException e){
-				// do nothing: we cannot do nothing on statement neither connection at this point, in case cannot
-				// be closed correctly (ex, comm failure)
-			}
-		}
+		// do nothing: we cannot do nothing on statement neither connection at this point, in case cannot
+		// be closed correctly (ex, comm failure)
 
 		return (T)this;
 	}

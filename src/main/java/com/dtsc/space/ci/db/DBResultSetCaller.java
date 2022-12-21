@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * DTordera, 20221220. DBResultSetCaller: main resultset caller object, that , if exists, collects from resultset
+ * DTordera, 20221220. DBResultSetCaller: main caller object, that, if exists after db call, collects it's resultSet
  */
 public abstract class DBResultSetCaller<T extends BaseEntity> extends DBCaller<DBResultSetCaller<T>> {
 
-	private List<T> _items;
+	private final List<T> _items;
 
 	public DBResultSetCaller(JdbcTemplate jdbctemplate, IDBResource sqlcommand)
 	{
 		super(jdbctemplate, sqlcommand);
 		setRc(0);
-		_items = new ArrayList<T>();
+		_items = new ArrayList<>();
 	}
 
 	public abstract T mapResultSet(ResultSet rs) throws SQLException;
