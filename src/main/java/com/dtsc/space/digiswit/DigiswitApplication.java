@@ -1,6 +1,6 @@
 package com.dtsc.space.digiswit;
 
-import com.dtsc.space.digiswit.logging.RequestLogger;
+import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
@@ -8,8 +8,6 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import java.util.TimeZone;
 

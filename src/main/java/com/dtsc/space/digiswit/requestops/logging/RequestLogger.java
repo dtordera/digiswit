@@ -1,4 +1,4 @@
-package com.dtsc.space.digiswit.logging;
+package com.dtsc.space.digiswit.requestops.logging;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;

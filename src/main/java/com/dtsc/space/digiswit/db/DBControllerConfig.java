@@ -2,7 +2,7 @@ package com.dtsc.space.digiswit.db;
 
 
 import com.dtsc.space.ci.db.DBConfiguration;
-import com.dtsc.space.digiswit.logging.RequestLogger;
+import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

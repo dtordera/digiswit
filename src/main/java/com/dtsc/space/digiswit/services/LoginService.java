@@ -1,8 +1,8 @@
 package com.dtsc.space.digiswit.services;
 
 import com.dtsc.space.digiswit.entities.Login;
-import com.dtsc.space.digiswit.entities.Token;
-import com.dtsc.space.digiswit.logging.RequestLogger;
+import com.dtsc.space.digiswit.entities.Session;
+import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class LoginService {
 	@Autowired
 	DBService dbService;
 
-	public ResponseEntity<Token> getToken(HttpServletRequest request, Login login)
+	public ResponseEntity<Session> getToken(HttpServletRequest request, Login login)
 	{
 		logger.info(request, "Get new token for user " + login.getUsername());
 

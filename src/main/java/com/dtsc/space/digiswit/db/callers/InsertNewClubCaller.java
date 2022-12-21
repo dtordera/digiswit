@@ -1,7 +1,7 @@
-package com.dtsc.space.digiswit.db;
+package com.dtsc.space.digiswit.db.callers;
 
 import com.dtsc.space.ci.db.DBCaller;
-import com.dtsc.space.ci.entities.BaseEntity;
+import com.dtsc.space.digiswit.db.DBResources;
 import com.dtsc.space.digiswit.entities.NewClub;
 import lombok.Getter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,7 +42,9 @@ public class InsertNewClubCaller extends DBCaller<InsertNewClubCaller> {
 	public void mapResponse(CallableStatement cs) throws SQLException {
 
 		setRc(cs.getInt("rc"));
-		newclub.setId(cs.getInt("clubId"));
+
+		if (getRc() == 0)
+			newclub.setId(cs.getInt("p_clubId"));
 	}
 
 	@Override

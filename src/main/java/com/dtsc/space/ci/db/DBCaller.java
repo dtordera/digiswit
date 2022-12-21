@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.dtsc.space.ci.entities.BaseEntity;
-import com.dtsc.space.digiswit.logging.RequestLogger;
-import com.dtsc.space.digiswit.services.LoginService;
+import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;

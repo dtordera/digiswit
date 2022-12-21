@@ -10,8 +10,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Token extends BaseEntity {
+public class Session extends BaseEntity {
 
+	protected int clubId;
 	protected String token;
 	protected long createdOn;
 	protected long expiresOn;

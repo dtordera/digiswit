@@ -1,9 +1,9 @@
-package com.dtsc.space.digiswit.db;
+package com.dtsc.space.digiswit.db.callers;
 
 import com.dtsc.space.ci.db.DBCaller;
-import com.dtsc.space.ci.entities.BaseEntity;
+import com.dtsc.space.digiswit.db.DBResources;
 import com.dtsc.space.digiswit.entities.Login;
-import com.dtsc.space.digiswit.entities.Token;
+import com.dtsc.space.digiswit.entities.Session;
 import lombok.Getter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,7 +22,7 @@ public class GetTokenCaller extends DBCaller<GetTokenCaller> {
 
 	// Resulting object (if all had been ok, null if not)
 	@Getter
-	private Token token;
+	private Session session;
 
 	public GetTokenCaller(JdbcTemplate jdbctemplate, Login login) {
 		super(jdbctemplate, DBResources._GETTOKEN);
@@ -36,8 +36,10 @@ public class GetTokenCaller extends DBCaller<GetTokenCaller> {
 		cs.setString(2, login.getPassword());
 
 		cs.registerOutParameter(3, Types.VARCHAR);
-		cs.registerOutParameter(4, Types.INTEGER);
-		cs.registerOutParameter(5, Types.INTEGER);
+		cs.registerOutParameter(4, Types.BIGINT);
+		cs.registerOutParameter(5, Types.BIGINT);
+		cs.registerOutParameter(6, Types.INTEGER);
+		cs.registerOutParameter(7, Types.INTEGER);
 	}
 
 	@Override
@@ -47,12 +49,14 @@ public class GetTokenCaller extends DBCaller<GetTokenCaller> {
 
 		if (getRc() != 0) return;
 
-		token = new Token();
-		token.setToken(cs.getString("p_token"));
-		token.setCreatedOn(cs.getLong("p_insertionTimestamp"));
-		token.setExpiresOn(cs.getLong("p_expirationTimestamp"));
+		session = new Session();
+		session.setClubId(cs.getInt("p_clubId"));
+		session.setToken(cs.getString("p_token"));
+		session.setCreatedOn(cs.getLong("p_insertionTimestamp"));
+		session.setExpiresOn(cs.getLong("p_expirationTimestamp"));
 	}
 
 	@Override
-	public Token getResultObject() { return token; }
+	@SuppressWarnings("unchecked")
+	public Session getResultObject() { return session; }
 }

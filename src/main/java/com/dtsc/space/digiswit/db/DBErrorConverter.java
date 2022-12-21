@@ -22,6 +22,7 @@ public class DBErrorConverter {
 		_OK(0,""),
 		_DUPLICATED_KEY(-1, "Duplicated key"),
 		_USERPASSWORDMISMATCH(-2, "User/password mismatch"),
+		_INVALIDTOKEN(-3, "Invalid token"),
 		_UNKNOWN_ERROR(-999, "Unknown error");
 
 		RC(int value, String msg)
@@ -38,8 +39,9 @@ public class DBErrorConverter {
 	final static Map<Integer, Exception> _dbErrors = new HashMap<>();
 	static {
 		_dbErrors.put(RC._OK.getValue(), null);
-		_dbErrors.put(RC._USERPASSWORDMISMATCH.getValue(), new SecurityException(RC._USERPASSWORDMISMATCH.getMsg()));
 		_dbErrors.put(RC._DUPLICATED_KEY.getValue(), new IllegalArgumentException(RC._DUPLICATED_KEY.getMsg()));
+		_dbErrors.put(RC._USERPASSWORDMISMATCH.getValue(), new SecurityException(RC._USERPASSWORDMISMATCH.getMsg()));
+		_dbErrors.put(RC._INVALIDTOKEN.getValue(), new SecurityException(RC._INVALIDTOKEN.getMsg()));
 	};
 
 

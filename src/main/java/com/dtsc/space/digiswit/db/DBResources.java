@@ -5,7 +5,9 @@ import com.dtsc.space.ci.db.IDBResource;
 public enum DBResources implements IDBResource {
 
 	_INSERTNEWCLUB("{call InsertNewClub(?,?,?,?,?,?,?,?)}"),
-	_GETTOKEN("{call GetToken(?,?,?,?,?,?)}"),
+	_INSERTNEWPLAYER("{call InsertNewPlayer(?,?,?,?,?,?,?,?)}"),
+	_GETTOKEN("{call GetToken(?,?,?,?,?,?,?)}"),
+	_CHECKTOKEN("{call CheckToken(?,?,?)}"),
 
 	_NOOP("");
 
