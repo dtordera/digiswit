@@ -4,7 +4,6 @@ import com.dtsc.space.ci.db.DBCaller;
 import com.dtsc.space.digiswit.db.DBResources;
 import com.dtsc.space.digiswit.entities.Login;
 import com.dtsc.space.digiswit.entities.Session;
-import lombok.Getter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.CallableStatement;
@@ -17,11 +16,10 @@ import java.sql.Types;
 
 public class GetTokenCaller extends DBCaller<GetTokenCaller> {
 
-	// Input object
+	// Input
 	private final Login login;
 
-	// Resulting object (if all had been ok, null if not)
-	@Getter
+	// Output
 	private Session session;
 
 	public GetTokenCaller(JdbcTemplate jdbctemplate, Login login) {

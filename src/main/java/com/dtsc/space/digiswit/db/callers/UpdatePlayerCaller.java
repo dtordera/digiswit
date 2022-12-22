@@ -10,30 +10,30 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /*
- * DTordera, 20221220. Caller to DB for new player insertion
+ * DTordera, 20221222. Caller to DB for update existing player
  */
 
-public class InsertNewPlayerCaller extends DBCaller<InsertNewPlayerCaller> {
+public class UpdatePlayerCaller extends DBCaller<UpdatePlayerCaller> {
 
 	// Input / output object
 	private final Player player;
 
-	public InsertNewPlayerCaller(JdbcTemplate jdbctemplate, int clubId, Player player) {
-		super(jdbctemplate, DBResources._INSERTNEWPLAYER);
+	public UpdatePlayerCaller(JdbcTemplate jdbctemplate, Player player) {
+		super(jdbctemplate, DBResources._UPDATEPLAYER);
 		this.player = player;
-		this.player.setClubId(clubId);
 	}
 
 	@Override
 	public void mapParameters(CallableStatement cs) throws SQLException {
-		cs.setString(1, player.getGivenName());
-		cs.setString(2, player.getFamilyName());
-		cs.setString(3, player.getNationality());
-		cs.setString(4, player.getEmail());
-		cs.setDate(5, player.getDateOfBirth());
-		cs.setInt(6, player.getClubId());
+		cs.setInt(1, player.getId());
+		cs.setInt(2, player.getClubId());
 
-		cs.registerOutParameter(7, Types.INTEGER);
+		cs.setString(3, player.getGivenName());
+		cs.setString(4, player.getFamilyName());
+		cs.setString(5, player.getNationality());
+		cs.setString(6, player.getEmail());
+		cs.setDate(7, player.getDateOfBirth());
+
 		cs.registerOutParameter(8, Types.INTEGER);
 	}
 
@@ -41,9 +41,6 @@ public class InsertNewPlayerCaller extends DBCaller<InsertNewPlayerCaller> {
 	public void mapResponse(CallableStatement cs) throws SQLException {
 
 		setRc(cs.getInt("rc"));
-
-		if (getRc() == 0)
-			player.setId(cs.getInt("p_playerId"));
 	}
 
 	@Override

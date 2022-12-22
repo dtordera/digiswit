@@ -1,26 +1,28 @@
 package com.dtsc.space.digiswit.services;
 
-import com.dtsc.space.digiswit.entities.Club;
-import com.dtsc.space.digiswit.entities.NewClub;
-import com.dtsc.space.digiswit.entities.Player;
+import com.dtsc.space.digiswit.entities.*;
 import com.dtsc.space.ci.entities.exceptions.DuplicatedKeyException;
 import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+/*
+ * DTordera, 20221222. Process service class for register operations
+ */
+
 
 @Service
-public class ClubService {
+public class RegisterService {
 
-	final static RequestLogger logger = new RequestLogger(ClubService.class);
+	final static RequestLogger logger = new RequestLogger(RegisterService.class);
 
 	@Autowired
-	ValidationService validatorService;
+	ValidationService validationService;
 
 	@Autowired
 	DBService dbService;
@@ -29,14 +31,14 @@ public class ClubService {
 	// New club/user register section
 	//
 
-	public ResponseEntity<Club> registerNewClub(HttpServletRequest request, NewClub newclub)
+	public ResponseEntity<Club> registerNewClub(HttpServletRequest request, ClubRegister newclub)
 	{
 		logger.info(request, "Creating new club register for \"" + newclub.getOfficialName() + "\" for user " + newclub.getUsername());
 
 		try {
 
 			// Validate arguments
-			validatorService.validateNewClubRegister(request, newclub);
+			validationService.validateNewClubRegister(request, newclub);
 
 			// All ok, attempt to insert db
 			return new ResponseEntity<>(dbService.insertNewClub(request, newclub), HttpStatus.OK);
@@ -46,7 +48,8 @@ public class ClubService {
 			logger.exception(request, D);
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		catch(IllegalArgumentException IA) // bad arguments by semantic (could be used 400 bad request as well)
+		catch(IllegalArgumentException
+			  | SQLIntegrityConstraintViolationException IA) // bad arguments by semantic (could be used 400 bad request as well)
 		{
 			logger.exception(request, IA);
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -68,7 +71,7 @@ public class ClubService {
 
 		try {
 			// Validate arguments
-			validatorService.validateNewPlayerRegister(request, clubId, player);
+			validationService.validateNewPlayerRegister(request, clubId, player);
 
 			// All ok, attempt to insert db
 			return new ResponseEntity<>(dbService.insertNewPlayer(request, clubId, player), HttpStatus.OK);
@@ -78,7 +81,8 @@ public class ClubService {
 			logger.exception(request, D);
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		catch(IllegalArgumentException IA) // bad arguments by semantic (could be used 400 bad request as well)
+		catch(IllegalArgumentException
+			  | SQLIntegrityConstraintViolationException IA) // bad arguments by semantic (could be used 400 bad request as well)
 		{
 			logger.exception(request, IA);
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -95,6 +99,24 @@ public class ClubService {
 	}
 
 	//
-	// Get clubs
+	// New login
 	//
+	public ResponseEntity<Session> getToken(HttpServletRequest request, Login login) {
+		logger.info(request, "Get new token for user " + login.getUsername());
+
+		try {
+			// Call db to retrieve active token (or generate new one)
+			return new ResponseEntity<>(dbService.getToken(request, login), HttpStatus.OK);
+
+		} catch (SecurityException S) {
+
+			logger.exception(request, S);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+		} catch (Exception E) // default exception
+		{
+			logger.exception(request, E);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

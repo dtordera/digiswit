@@ -7,8 +7,6 @@ package com.dtsc.space.ci.entities.exceptions;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.sql.SQLException;
-
 public class DuplicatedKeyException extends DataIntegrityViolationException {
 
 	private final static String _MESSAGE = "resource already exists";

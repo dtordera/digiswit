@@ -16,8 +16,10 @@ import java.sql.Types;
 
 public class CheckTokenCaller extends DBCaller<CheckTokenCaller> {
 
+	// Input
 	String token;
 
+	// Output
 	Session session;
 
 	public CheckTokenCaller(JdbcTemplate jdbctemplate, String token) {

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -33,6 +34,12 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj)
 	{
 		try {
+			// Excluding direct POST to /club (new user)
+			if (request.getMethod().equals(HttpMethod.POST.toString())
+				&& request.getServletPath().equals(("/club"))) {
+				logger.warn(request, "* Excluding new user (POST /club) from authorization check *");
+				return true;
+			}
 
 			// Call DB for token check
 			logger.info(request, "Checking authorization token");

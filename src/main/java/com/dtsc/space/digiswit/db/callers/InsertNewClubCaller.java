@@ -2,8 +2,7 @@ package com.dtsc.space.digiswit.db.callers;
 
 import com.dtsc.space.ci.db.DBCaller;
 import com.dtsc.space.digiswit.db.DBResources;
-import com.dtsc.space.digiswit.entities.NewClub;
-import lombok.Getter;
+import com.dtsc.space.digiswit.entities.ClubRegister;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.CallableStatement;
@@ -16,11 +15,11 @@ import java.sql.Types;
 
 public class InsertNewClubCaller extends DBCaller<InsertNewClubCaller> {
 
-	@Getter
-	private final NewClub newclub;
+	// Input / output object
+	private final ClubRegister newclub;
 
 
-	public InsertNewClubCaller(JdbcTemplate jdbctemplate, NewClub newclub) {
+	public InsertNewClubCaller(JdbcTemplate jdbctemplate, ClubRegister newclub) {
 		super(jdbctemplate, DBResources._INSERTNEWCLUB);
 		this.newclub = newclub;
 	}
@@ -49,7 +48,7 @@ public class InsertNewClubCaller extends DBCaller<InsertNewClubCaller> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public NewClub getResultObject() {
+	public ClubRegister getResultObject() {
 		return newclub;
 	}
 }

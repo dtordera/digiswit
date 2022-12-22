@@ -1,6 +1,7 @@
 package com.dtsc.space.ci.db;
 
 import com.dtsc.space.ci.entities.BaseEntity;
+import lombok.Getter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.ResultSet;
@@ -13,31 +14,25 @@ import java.util.List;
  */
 public abstract class DBResultSetCaller<T extends BaseEntity> extends DBCaller<DBResultSetCaller<T>> {
 
-	private final List<T> _items;
+	@Getter
+	private final List<T> items;
 
 	public DBResultSetCaller(JdbcTemplate jdbctemplate, IDBResource sqlcommand)
 	{
 		super(jdbctemplate, sqlcommand);
 		setRc(0);
-		_items = new ArrayList<>();
+		items = new ArrayList<>();
 	}
 
-	public abstract T mapResultSet(ResultSet rs) throws SQLException;
+	public abstract T mapResultSet(ResultSet rs) throws SQLException; // To implement
 
-	public void addItems(ResultSet rs) throws SQLException
+	public void addItems(ResultSet rs) throws SQLException // go through resultSet and generate list
 	{
 		if (rs!=null)
 			while (rs.next())
-				addItem(mapResultSet(rs));
+				items.add(mapResultSet(rs));
 	}
 
-	public void addItem(T C)
-	{
-		_items.add(C);
-	}
+	public <Q extends BaseEntity> Q getResultObject() { return null; } // Should not be required on resultSet operations
 
-	public List<T> getItems()
-	{
-		return _items;
-	}
 }

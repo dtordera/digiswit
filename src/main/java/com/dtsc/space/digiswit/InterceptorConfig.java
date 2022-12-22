@@ -23,7 +23,8 @@ public class InterceptorConfig implements WebMvcConfigurer  {
 	public void addInterceptors(InterceptorRegistry registry)
 	{
 		logger.info(null, "Adding Authorize interceptor");
-		registry.addInterceptor(authorizeInterceptor).excludePathPatterns("/*")
+		registry.addInterceptor(authorizeInterceptor)
+				.addPathPatterns("/club")
 				.addPathPatterns("/club/**");
 
 	}

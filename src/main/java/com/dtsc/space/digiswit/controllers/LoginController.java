@@ -2,7 +2,7 @@ package com.dtsc.space.digiswit.controllers;
 
 import com.dtsc.space.digiswit.entities.Login;
 import com.dtsc.space.digiswit.entities.Session;
-import com.dtsc.space.digiswit.services.LoginService;
+import com.dtsc.space.digiswit.services.RegisterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
 	@Autowired
-	LoginService loginService;
+	RegisterService registerService;
 
 	// Registering new club/user
 	@PostMapping(value="", produces={"application/json"}, consumes={"application/json"})
 	public ResponseEntity<Session> registerNewClub(HttpServletRequest request, @RequestBody Login login)
 	{
-		return loginService.getToken(request, login);
+		return registerService.getToken(request, login);
 	}
-
 }

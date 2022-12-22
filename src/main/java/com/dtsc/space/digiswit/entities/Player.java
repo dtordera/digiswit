@@ -26,6 +26,6 @@ public class Player extends BaseEntity {
 	protected String email;
 	protected Date dateOfBirth;
 
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY) // clubId is not set by json body, but by auth header + path param
 	protected int clubId=-1;
 }

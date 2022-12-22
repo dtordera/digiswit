@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NewClub extends Club {
+public class ClubRegister extends Club {
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Ensure never will be rendered to json
 	protected String username;
