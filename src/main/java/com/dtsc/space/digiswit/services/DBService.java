@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+
 @Service
 public class DBService {
 
@@ -35,7 +37,7 @@ public class DBService {
 		return errorConverter.checkCaller(new CheckTokenCaller(jdbctemplate, token).doCall(request));
 	}
 
-	public Player insertNewPlayer(HttpServletRequest request, int clubId, Player player) throws Exception
+	public <R extends Exception> Player insertNewPlayer(HttpServletRequest request, int clubId, Player player) throws R, SQLException
 	{
 		return errorConverter.checkCaller(new InsertNewPlayerCaller(jdbctemplate, clubId, player).doCall(request));
 	}

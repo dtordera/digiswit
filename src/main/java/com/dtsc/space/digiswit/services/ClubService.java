@@ -3,12 +3,16 @@ package com.dtsc.space.digiswit.services;
 import com.dtsc.space.digiswit.entities.Club;
 import com.dtsc.space.digiswit.entities.NewClub;
 import com.dtsc.space.digiswit.entities.Player;
+import com.dtsc.space.ci.entities.exceptions.DuplicatedKeyException;
 import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 @Service
 public class ClubService {
@@ -37,7 +41,12 @@ public class ClubService {
 			// All ok, attempt to insert db
 			return new ResponseEntity<>(dbService.insertNewClub(request, newclub), HttpStatus.OK);
 		}
-		catch(IllegalArgumentException IA) // bad arguments: returning, instead of 400 bad request, a more suitable 422
+		catch(DuplicatedKeyException D) // case of existing entity on server (could be used 400 bad request as well)
+		{
+			logger.exception(request, D);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		catch(IllegalArgumentException IA) // bad arguments by semantic (could be used 400 bad request as well)
 		{
 			logger.exception(request, IA);
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -64,7 +73,12 @@ public class ClubService {
 			// All ok, attempt to insert db
 			return new ResponseEntity<>(dbService.insertNewPlayer(request, clubId, player), HttpStatus.OK);
 		}
-		catch(IllegalArgumentException IA) // bad arguments: returning, instead of 400 bad request, a more suitable 422
+		catch(DuplicatedKeyException D) // case of existing entity on server (could be used 400 bad request as well)
+		{
+			logger.exception(request, D);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		catch(IllegalArgumentException IA) // bad arguments by semantic (could be used 400 bad request as well)
 		{
 			logger.exception(request, IA);
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -74,10 +88,13 @@ public class ClubService {
 			logger.exception(request, S);
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		catch(Exception E) // default
-		{
+		catch (Exception E) {	// All other
 			logger.exception(request, E);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	//
+	// Get clubs
+	//
 }
