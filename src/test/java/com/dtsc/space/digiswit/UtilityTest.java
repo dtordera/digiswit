@@ -18,13 +18,13 @@ public class UtilityTest {
 	@Test
 	public void isAPIup(@Autowired MockMvc mvc) throws Exception
 	{
-		mvc.perform(get("/ping").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mvc.perform(get("/utility/ping").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
 	public void isEchoing(@Autowired MockMvc mvc) throws Exception
 	{
-		mvc.perform(get("/ping/TESTING_ECHO").accept(MediaType.APPLICATION_JSON)).
+		mvc.perform(get("/utility/ping/TESTING_ECHO").accept(MediaType.APPLICATION_JSON)).
 				andExpect(status().isOk()).
 				andExpect(content().json("{\"echo\":\"TESTING_ECHO\"}"));
 	}
@@ -32,7 +32,7 @@ public class UtilityTest {
 	@Test
 	public void getNationalities(@Autowired MockMvc mvc) throws Exception
 	{
-		mvc.perform(get("/ping/nationalities").accept(MediaType.APPLICATION_JSON)).
+		mvc.perform(get("/utility/nationality").accept(MediaType.APPLICATION_JSON)).
 				andExpect(status().isOk()).
 				andExpect(jsonPath("$[0].countryCode").value(20)).
 				andExpect(jsonPath("$[0].alpha2").value("AD")).

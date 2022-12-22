@@ -48,6 +48,14 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "clear data",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},

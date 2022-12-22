@@ -15,6 +15,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Club extends BaseEntity {
 
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected int id = -1;
 
 	protected String officialName;

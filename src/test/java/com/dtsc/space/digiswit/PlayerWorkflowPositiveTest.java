@@ -8,6 +8,7 @@ import com.dtsc.space.digiswit.entities.ClubRegister;
 import com.dtsc.space.digiswit.entities.Player;
 import com.dtsc.space.digiswit.entities.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,7 +43,7 @@ public class PlayerWorkflowPositiveTest {
 				accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).
 				content(club1)).andExpect(status().isOk()).andReturn();
 
-		int clubId = objectMapper.readValue(resultNewClub.getResponse().getContentAsString(), ClubRegister.class).getId();
+		int clubId = JsonPath.parse(resultNewClub.getResponse().getContentAsString()).read("$.id");
 		System.out.println("Retrieved club id for first club: " + clubId);
 
 		// do login for first user...
@@ -65,7 +66,7 @@ public class PlayerWorkflowPositiveTest {
 				header("authorization", "Bearer " + token)
 		).andExpect(status().isOk()).andReturn();
 
-		int messiid = objectMapper.readValue(resultMessi.getResponse().getContentAsString(), Player.class).getId();
+		int messiid = JsonPath.parse(resultMessi.getResponse().getContentAsString()).read("$.id");
 		System.out.println("** Player 1 id : " + messiid);
 
 		// Adding another one...
@@ -78,7 +79,7 @@ public class PlayerWorkflowPositiveTest {
 				header("authorization", "Bearer " + token)
 		).andExpect(status().isOk()).andReturn();
 
-		int cristianoid = objectMapper.readValue(resultCristiano.getResponse().getContentAsString(), Player.class).getId();
+		int cristianoid = JsonPath.parse(resultCristiano.getResponse().getContentAsString()).read("$.id");
 		System.out.println("** Player 2 id : " + cristianoid);
 
 		// Update player 2

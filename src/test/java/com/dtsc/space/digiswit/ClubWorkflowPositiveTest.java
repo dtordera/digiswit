@@ -4,6 +4,7 @@ import com.dtsc.space.digiswit.entities.Club;
 import com.dtsc.space.digiswit.entities.ClubRegister;
 import com.dtsc.space.digiswit.entities.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,7 +45,7 @@ public class ClubWorkflowPositiveTest {
 				accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).
 				content(club1)).andExpect(status().isOk()).andReturn();
 
-		int clubId = objectMapper.readValue(resultNewClub.getResponse().getContentAsString(), ClubRegister.class).getId();
+		int clubId = JsonPath.parse(resultNewClub.getResponse().getContentAsString()).read("$.id");
 		System.out.println("Retrieved club id for first club: " + clubId);
 
 		// Create another club
