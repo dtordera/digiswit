@@ -17,7 +17,6 @@ import java.sql.Date;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Player extends BaseEntity {
 
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected int id = -1;
 
 	protected String givenName;

@@ -35,7 +35,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
 		try {
 			// Excluding direct POST to /club (new user, without logging)
 			if (request.getMethod().toLowerCase().equals(HttpMethod.POST.toString().toLowerCase())
-				&& (request.getServletPath().equals("/club") || request.getServletPath().isEmpty())) {
+				&& request.getRequestURI().equals("/club")) {
 				logger.warn(request, "* Excluding new user (POST /club) from authorization check *");
 				return true;
 			}
