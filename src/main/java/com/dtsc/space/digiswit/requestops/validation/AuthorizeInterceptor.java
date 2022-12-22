@@ -1,6 +1,5 @@
 package com.dtsc.space.digiswit.requestops.validation;
 
-import com.dtsc.space.digiswit.InterceptorConfig;
 import com.dtsc.space.digiswit.entities.Session;
 import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
 import com.dtsc.space.digiswit.services.DBService;
@@ -34,9 +33,9 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj)
 	{
 		try {
-			// Excluding direct POST to /club (new user)
-			if (request.getMethod().equals(HttpMethod.POST.toString())
-				&& request.getServletPath().equals(("/club"))) {
+			// Excluding direct POST to /club (new user, without logging)
+			if (request.getMethod().toLowerCase().equals(HttpMethod.POST.toString().toLowerCase())
+				&& (request.getServletPath().equals("/club") || request.getServletPath().isEmpty())) {
 				logger.warn(request, "* Excluding new user (POST /club) from authorization check *");
 				return true;
 			}

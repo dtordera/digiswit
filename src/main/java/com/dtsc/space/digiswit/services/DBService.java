@@ -25,6 +25,11 @@ public class DBService {
 		return errorConverter.checkCaller(new GetNationalitiesCaller(jdbctemplate).doCall(request));
 	}
 
+	public void pruneSystem(HttpServletRequest request) throws Exception
+	{
+		errorConverter.checkCaller(new PruneSystemCaller(jdbctemplate).doCall(request));
+	}
+
 	// Token
 	public Session getToken(HttpServletRequest request, Login login) throws Exception
 	{

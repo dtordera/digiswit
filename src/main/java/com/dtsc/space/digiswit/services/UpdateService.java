@@ -124,4 +124,18 @@ public class UpdateService {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	// Required for correct tests cases
+	public ResponseEntity<Void> pruneSystem(HttpServletRequest request)
+	{
+		logger.warn(request, "* PRUNING ALL DATA ON DATABASE *");
+		try {
+			dbService.pruneSystem(request);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch(Exception E) {
+			logger.exception(request, E);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

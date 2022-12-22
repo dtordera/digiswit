@@ -16,6 +16,7 @@ public enum DBResources implements IDBResource {
 	_UPDATECLUB("{call UpdateClub(?,?,?,?,?,?,?,?)}"),
 	_UPDATEPLAYER("{call UpdatePlayer(?,?,?,?,?,?,?,?)}"),
 	_DELETEPLAYER("{call DeletePlayer(?,?,?)}"),
+	_PRUNESYSTEM("{call PruneSystem(?)}"),
 
 
 	_NOOP("");

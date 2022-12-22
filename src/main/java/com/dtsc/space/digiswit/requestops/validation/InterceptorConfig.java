@@ -1,7 +1,6 @@
-package com.dtsc.space.digiswit;
+package com.dtsc.space.digiswit.requestops.validation;
 
 import com.dtsc.space.digiswit.requestops.logging.RequestLogger;
-import com.dtsc.space.digiswit.requestops.validation.AuthorizeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,6 +23,7 @@ public class InterceptorConfig implements WebMvcConfigurer  {
 	{
 		logger.info(null, "Adding Authorize interceptor");
 		registry.addInterceptor(authorizeInterceptor)
+				.excludePathPatterns("/utility/**")
 				.addPathPatterns("/club")
 				.addPathPatterns("/club/**");
 
